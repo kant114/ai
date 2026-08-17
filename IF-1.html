@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>정보 1차시</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+  :root{
+    --bg:#080B18;
+    --bg-2:#0D1330;
+    --surface:#131A38;
+    --surface-2:#1B2447;
+    --line:#2B3566;
+    --line-soft:#1F2850;
+    --mint:#7CFFCB;
+    --amber:#FFB454;
+    --coral:#FF8B8B;
+    --violet:#B9A6FF;
+    --text:#EAEFFC;
+    --text-dim:#95A1CC;
+    --text-faint:#5C6796;
+    --font-display:'Pretendard', 'Noto Sans KR', sans-serif;
+    --font-body:'Pretendard', 'Noto Sans KR', sans-serif;
+    --font-mono:'JetBrains Mono', monospace;
+    --radius:18px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(circle at 15% 0%, #131C42 0%, transparent 45%),
+      radial-gradient(circle at 85% 15%, #1A1440 0%, transparent 40%),
+      var(--bg);
+    color:var(--text);
+    font-family:var(--font-body);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--mint); color:#06110D;}
+  a{color:inherit;}
+  .wrap{max-width:920px; margin:0 auto; padding:0 24px;}
+  .eyebrow{
+    font-family:var(--font-mono);
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    font-size:12.5px;
+    color:var(--mint);
+    display:flex; align-items:center; gap:8px;
+  }
+  .eyebrow::before{content:"//"; color:var(--text-faint);}
+  .pg{
+    font-family:var(--font-mono); font-size:11.5px; color:var(--text-faint);
+    border:1px solid var(--line); padding:4px 10px; border-radius:999px;
+    display:inline-flex; align-items:center; gap:6px; margin-left:10px;
+  }
+  .pg::before{content:"📖";}
+
+  /* ---------- NAV ---------- */
+  nav.tabs{
+    position:sticky; top:0; z-index:50;
+    backdrop-filter:blur(14px);
+    background:rgba(8,11,24,.82);
+    border-bottom:1px solid var(--line-soft);
+  }
+  .tabs-inner{
+    max-width:920px; margin:0 auto; padding:0 24px;
+    display:flex; gap:2px; overflow-x:auto; scrollbar-width:none;
+  }
+  .tabs-inner::-webkit-scrollbar{display:none;}
+  .tab-btn{
+    flex:0 0 auto;
+    background:none; border:none; cursor:pointer;
+    color:var(--text-faint);
+    font-family:var(--font-mono);
+    font-size:12.5px;
+    padding:14px 12px 12px;
+    border-bottom:2px solid transparent;
+    transition:color .2s;
+    white-space:nowrap;
+  }
+  .tab-btn:hover{color:var(--text-dim);}
+  .tab-btn.active{color:var(--mint); border-bottom-color:var(--mint);}
+  .tab-btn .n{opacity:.6; margin-right:4px;}
+
+  /* ---------- HERO ---------- */
+  header.hero{
+    position:relative;
+    padding:80px 0 56px;
+    overflow:hidden;
+    border-bottom:1px solid var(--line-soft);
+  }
+  .net-bg{position:absolute; inset:0; opacity:.5; pointer-events:none;}
+  .hero-inner{position:relative; z-index:2;}
+  h1.title{
+    font-family:var(--font-display);
+    font-weight:800;
+    letter-spacing:-0.01em;
+    font-size:clamp(32px, 5vw, 50px);
+    line-height:1.3;
+    margin:14px 0 10px;
+    color:#fff;
+  }
+  h1.title .hl{color:var(--mint);}
+  .hero p.desc{color:var(--text-dim); font-size:16px; max-width:600px; margin:0 0 24px;}
+  .goal-box{
+    background:var(--surface); border:1px solid var(--line); border-radius:14px;
+    padding:18px 22px; max-width:640px;
+  }
+  .goal-box .lead{font-family:var(--font-mono); font-size:11.5px; color:var(--mint); letter-spacing:.08em; margin-bottom:8px;}
+  .goal-box p{margin:0; font-size:15px; color:var(--text);}
+
+  /* ---------- SECTIONS GENERIC ---------- */
+  section.block{padding:72px 0; border-bottom:1px solid var(--line-soft);}
+  section.block:last-of-type{border-bottom:none;}
+  .sec-head{margin-bottom:32px;}
+  h2.sec-title{
+    font-family:var(--font-display);
+    font-weight:800;
+    letter-spacing:-0.01em;
+    line-height:1.35;
+    font-size:clamp(22px,3.4vw,30px);
+    margin:10px 0 0;
+    color:#fff;
+    display:flex; align-items:center; flex-wrap:wrap; gap:4px;
+  }
+  p.sec-sub{color:var(--text-dim); margin:10px 0 0; max-width:640px;}
+
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:22px 24px;
+  }
+
+  /* ---------- DEFINITION BOX ---------- */
+  .def-box{
+    background:var(--surface); border:1px solid var(--line);
+    border-radius:var(--radius); padding:26px 28px;
+    font-size:17px;
+    border-left:4px solid var(--mint);
+  }
+  .def-box .lead{font-family:var(--font-mono); font-size:12px; color:var(--text-faint); margin-bottom:10px; letter-spacing:.06em;}
+  .def-box.danger{border-left-color:var(--coral);}
+
+  /* ---------- ACCORDION (6 types) ---------- */
+  .accordion{margin-top:22px; display:flex; flex-direction:column; gap:10px;}
+  .acc-item{
+    background:var(--surface); border:1px solid var(--line); border-radius:14px;
+    overflow:hidden;
+  }
+  .acc-head{
+    display:flex; align-items:center; gap:14px; padding:16px 18px;
+    cursor:pointer; user-select:none;
+  }
+  .acc-head .ic{font-size:22px; flex:0 0 auto;}
+  .acc-head .num{font-family:var(--font-mono); font-size:11px; color:var(--text-faint);}
+  .acc-head b{font-size:15.5px; display:block;}
+  .acc-head .chevron{margin-left:auto; color:var(--text-faint); transition:transform .25s; font-size:14px;}
+  .acc-item.open .chevron{transform:rotate(180deg); color:var(--mint);}
+  .acc-body{max-height:0; overflow:hidden; transition:max-height .3s ease;}
+  .acc-item.open .acc-body{max-height:200px;}
+  .acc-body-inner{padding:0 18px 18px 54px; font-size:14.5px; color:var(--text-dim);}
+
+  /* ---------- QUIZ ---------- */
+  .quiz{
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+    padding:24px; margin-top:24px;
+  }
+  .quiz .qhead{font-family:var(--font-mono); font-size:12px; color:var(--text-faint); margin-bottom:16px; letter-spacing:.05em;}
+  .q-item{margin-bottom:22px;}
+  .q-item:last-child{margin-bottom:0;}
+  .q-text{font-size:15.5px; margin-bottom:12px; font-weight:600;}
+  .q-opts{display:flex; gap:10px; flex-wrap:wrap;}
+  .opt-btn{
+    background:var(--surface-2); border:1px solid var(--line); color:var(--text);
+    padding:10px 16px; border-radius:10px; cursor:pointer; font-size:14px;
+    font-family:var(--font-body); transition:.15s;
+  }
+  .opt-btn:hover:not(:disabled){border-color:var(--mint); color:var(--mint);}
+  .opt-btn.correct{background:rgba(124,255,203,.15); border-color:var(--mint); color:var(--mint);}
+  .opt-btn.wrong{background:rgba(255,139,139,.15); border-color:var(--coral); color:var(--coral); animation:shake .3s;}
+  .opt-btn:disabled{cursor:default; opacity:.55;}
+  .opt-btn:disabled.correct, .opt-btn:disabled.wrong{opacity:1;}
+  @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-4px);}75%{transform:translateX(4px);}}
+  .q-explain{
+    margin-top:10px; font-size:13.5px; color:var(--text-dim);
+    display:none; padding:10px 12px; background:var(--bg-2); border-radius:8px;
+    border-left:3px solid var(--mint);
+  }
+  .q-explain.show{display:block;}
+
+  /* ---------- FLIP CARDS (3 crime types) ---------- */
+  .flip-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:22px;}
+  @media (max-width:820px){.flip-grid{grid-template-columns:1fr;}}
+  .flip{perspective:1200px; height:190px; cursor:pointer;}
+  .flip-inner{position:relative; width:100%; height:100%; transition:transform .55s; transform-style:preserve-3d;}
+  .flip.flipped .flip-inner{transform:rotateY(180deg);}
+  .flip-face{
+    position:absolute; inset:0; backface-visibility:hidden;
+    border-radius:14px; padding:20px; border:1px solid var(--line);
+    display:flex; flex-direction:column; justify-content:center;
+  }
+  .flip-front{background:var(--surface-2);}
+  .flip-back{background:var(--surface); transform:rotateY(180deg); border-color:var(--amber);}
+  .flip .tag{font-family:var(--font-mono); font-size:11px; color:var(--text-faint); margin-bottom:6px;}
+  .flip h4{margin:0 0 6px; font-size:17px;}
+  .flip .hint{font-size:12px; color:var(--text-faint); margin-top:auto; font-family:var(--font-mono);}
+  .flip-back p{font-size:13.5px; color:var(--text-dim); margin:0;}
+
+  /* ---------- DISCUSSION / PLEDGE ---------- */
+  .pledge-box{
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:26px 28px;
+  }
+  .pledge-box .lead{font-family:var(--font-mono); font-size:12px; color:var(--mint); letter-spacing:.06em; margin-bottom:10px;}
+  .pledge-box p{color:var(--text-dim); font-size:15px; margin:0 0 18px;}
+  .checklist{display:flex; flex-direction:column; gap:10px; margin-bottom:20px;}
+  .check-row{
+    display:flex; align-items:center; gap:12px; background:var(--surface-2);
+    border:1px solid var(--line); border-radius:10px; padding:12px 14px; cursor:pointer;
+  }
+  .check-row input{width:18px; height:18px; accent-color:var(--mint); cursor:pointer;}
+  .check-row span{font-size:14.5px;}
+  .check-row.checked{border-color:var(--mint);}
+  textarea.note{
+    width:100%; min-height:110px; background:var(--bg-2); border:1px solid var(--line);
+    border-radius:12px; color:var(--text); font-family:var(--font-body); font-size:14.5px;
+    padding:14px; resize:vertical;
+  }
+  textarea.note:focus{outline:none; border-color:var(--mint);}
+  .note-label{font-family:var(--font-mono); font-size:11.5px; color:var(--text-faint); margin:18px 0 8px;}
+
+  /* ---------- FINAL QUIZ / RESULT ---------- */
+  .final-quiz .q-item{padding:18px; background:var(--surface-2); border-radius:12px; border:1px solid var(--line);}
+  .result-box{
+    display:none; text-align:center; padding:40px 24px; margin-top:20px;
+    border-radius:var(--radius); border:1px solid var(--mint);
+    background:radial-gradient(circle at 50% 0%, rgba(124,255,203,.12), transparent 70%);
+  }
+  .result-box.show{display:block;}
+  .result-box .score{font-family:var(--font-display); font-weight:800; font-size:44px; color:var(--mint);}
+  .result-box .msg{margin-top:8px; font-size:16px; color:var(--text);}
+
+  /* ---------- SCORE BADGE ---------- */
+  .score-badge{
+    position:fixed; right:18px; bottom:18px; z-index:60;
+    background:var(--surface); border:1px solid var(--mint); border-radius:999px;
+    padding:10px 18px; font-family:var(--font-mono); font-size:13px;
+    box-shadow:0 8px 30px rgba(0,0,0,.4);
+    display:none; align-items:center; gap:8px; color:var(--mint);
+  }
+  .score-badge.show{display:flex;}
+  .score-badge .dot{width:7px; height:7px; border-radius:50%; background:var(--mint); animation:pulse2 1.6s infinite;}
+  @keyframes pulse2{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+  footer{padding:30px 24px 60px;}
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none !important; transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<nav class="tabs">
+  <div class="tabs-inner">
+    <button class="tab-btn" data-target="s1"><span class="n">01</span>목표</button>
+    <button class="tab-btn" data-target="s2"><span class="n">02</span>사이버폭력</button>
+    <button class="tab-btn" data-target="s3"><span class="n">03</span>폭력 유형</button>
+    <button class="tab-btn" data-target="s4"><span class="n">04</span>사이버범죄</button>
+    <button class="tab-btn" data-target="s5"><span class="n">05</span>범죄 유형</button>
+    <button class="tab-btn" data-target="s6"><span class="n">06</span>실천 다짐</button>
+    <button class="tab-btn" data-target="s7"><span class="n">07</span>종합퀴즈</button>
+  </div>
+</nav>
+
+<header class="hero">
+  <svg class="net-bg" id="netBg" viewBox="0 0 900 380" preserveAspectRatio="xMidYMid slice"></svg>
+  <div class="wrap hero-inner">
+    <div class="eyebrow">정보 · 5. 디지털 문화</div>
+    <h1 class="title">디지털 시민과 <span class="hl">윤리</span></h1>
+    <p class="desc">우리는 매일 온라인에서 만나고, 이야기하고, 함께 살아갑니다. 안전하고 건강한 디지털 사회를 만들기 위해 무엇을 알고, 어떻게 행동해야 할까요?</p>
+    <div class="goal-box">
+      <div class="lead">🎯 학습목표</div>
+      <p>디지털 사회의 구성원으로서 편리하고 안전한 생활을 위한 규칙에 대해 민주적으로 논의하고 실천 방안을 수립할 수 있다.</p>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- SECTION 1 -->
+  <section class="block" id="s1">
+    <div class="sec-head">
+      <div class="eyebrow">01 · 학습목표</div>
+      <h2 class="sec-title">오늘 우리가 배울 것</h2>
+      <p class="sec-sub">디지털 공간도 우리가 함께 살아가는 &ldquo;사회&rdquo;입니다. 그 안에서 벌어지는 문제들을 알아보고, 우리 반만의 안전 수칙을 함께 정해봅시다.</p>
+    </div>
+    <div class="grid-check">
+      <div class="card" style="display:flex; gap:16px; flex-wrap:wrap;">
+        <div style="flex:1; min-width:220px;">
+          <div class="eyebrow" style="margin-bottom:6px;">STEP 1</div>
+          <b>사이버 폭력</b>이 무엇인지, 어떤 유형이 있는지 알아봐요. <span class="pg">p.216</span>
+        </div>
+        <div style="flex:1; min-width:220px;">
+          <div class="eyebrow" style="margin-bottom:6px;">STEP 2</div>
+          <b>사이버 범죄</b>의 종류를 알아봐요. <span class="pg">p.217</span>
+        </div>
+        <div style="flex:1; min-width:220px;">
+          <div class="eyebrow" style="margin-bottom:6px;">STEP 3</div>
+          우리 반의 <b>디지털 실천 다짐</b>을 함께 정해봐요.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2 -->
+  <section class="block" id="s2">
+    <div class="sec-head">
+      <div class="eyebrow">02 · 사이버 폭력</div>
+      <h2 class="sec-title">사이버 폭력이란? <span class="pg">p.216</span></h2>
+    </div>
+    <div class="def-box danger">
+      <div class="lead">DEFINITION</div>
+      사이버 폭력은 사이버 공간에서 언어, 영상 등으로 다른 사람에게 <b style="color:var(--coral)">피해나 불쾌감</b>을 주는 행위입니다.
+    </div>
+    <p class="sec-sub" style="margin-top:20px;">사이버 폭력에는 여러 형태가 있습니다. 다음 섹션에서 하나씩 살펴볼까요? 👉</p>
+  </section>
+
+  <!-- SECTION 3 -->
+  <section class="block" id="s3">
+    <div class="sec-head">
+      <div class="eyebrow">03 · 폭력 유형</div>
+      <h2 class="sec-title">사이버 폭력의 6가지 유형</h2>
+      <p class="sec-sub">항목을 클릭하면 자세한 설명이 펼쳐져요.</p>
+    </div>
+    <div class="accordion" id="accBully"></div>
+
+    <div class="quiz" id="quizBully">
+      <div class="qhead">MINI QUIZ · 어떤 사이버 폭력 유형일까요?</div>
+      <div id="quizBully-mount"></div>
+    </div>
+  </section>
+
+  <!-- SECTION 4 -->
+  <section class="block" id="s4">
+    <div class="sec-head">
+      <div class="eyebrow">04 · 사이버 범죄</div>
+      <h2 class="sec-title">사이버 범죄란? <span class="pg">p.217</span></h2>
+    </div>
+    <div class="def-box">
+      <div class="lead">DEFINITION</div>
+      사이버 범죄는 네트워크로 연결된 컴퓨팅 시스템이나 사이버 공간에서 발생하는 <b style="color:var(--mint)">각종 범죄 행위</b>입니다.
+    </div>
+  </section>
+
+  <!-- SECTION 5 -->
+  <section class="block" id="s5">
+    <div class="sec-head">
+      <div class="eyebrow">05 · 범죄 유형</div>
+      <h2 class="sec-title">사이버 범죄의 3가지 유형</h2>
+      <p class="sec-sub">카드를 클릭하면 자세한 설명이 뒤집혀서 보여요.</p>
+    </div>
+    <div class="flip-grid" id="flipCrime"></div>
+
+    <div class="quiz" id="quizCrime">
+      <div class="qhead">MINI QUIZ · 어떤 사이버 범죄일까요?</div>
+      <div id="quizCrime-mount"></div>
+    </div>
+  </section>
+
+  <!-- SECTION 6 -->
+  <section class="block" id="s6">
+    <div class="sec-head">
+      <div class="eyebrow">06 · 실천 다짐</div>
+      <h2 class="sec-title">우리 반 디지털 시민 약속</h2>
+      <p class="sec-sub">학습목표처럼, 규칙은 누군가 정해주는 것이 아니라 우리가 함께 &ldquo;민주적으로&rdquo; 논의해서 만드는 것입니다.</p>
+    </div>
+    <div class="pledge-box">
+      <div class="lead">✅ 체크해보기 — 나는 이미 지키고 있나요?</div>
+      <p>아래 항목을 읽고, 스스로 실천하고 있는 것에 체크해보세요.</p>
+      <div class="checklist" id="checklist"></div>
+    </div>
+  </section>
+
+  <!-- SECTION 7 : FINAL QUIZ -->
+  <section class="block" id="s7">
+    <div class="sec-head">
+      <div class="eyebrow">07 · 종합 퀴즈</div>
+      <h2 class="sec-title">오늘 배운 내용, 정리해볼까요?</h2>
+      <p class="sec-sub">5문제를 모두 풀면 결과가 나타나요.</p>
+    </div>
+    <div class="quiz final-quiz" id="finalQuiz">
+      <div id="finalQuiz-mount"></div>
+    </div>
+    <div class="result-box" id="resultBox">
+      <div class="score" id="resultScore">0 / 5</div>
+      <div class="msg" id="resultMsg"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer></footer>
+
+<div class="score-badge" id="scoreBadge"><span class="dot"></span><span id="scoreText">점수 0 / 0</span></div>
+
+<script>
+/* ---------------- state ---------------- */
+let correctCount = 0;
+let totalCount = 0;
+const scoreBadge = document.getElementById('scoreBadge');
+const scoreText = document.getElementById('scoreText');
+function bumpScore(isCorrect){
+  totalCount++;
+  if(isCorrect) correctCount++;
+  scoreBadge.classList.add('show');
+  scoreText.textContent = `점수 ${correctCount} / ${totalCount}`;
+}
+
+/* ---------------- nav scroll spy ---------------- */
+const tabBtns = [...document.querySelectorAll('.tab-btn')];
+const sections = tabBtns.map(b => document.getElementById(b.dataset.target));
+tabBtns.forEach(b => b.addEventListener('click', () => {
+  document.getElementById(b.dataset.target).scrollIntoView({behavior:'smooth', block:'start'});
+}));
+const spy = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      const idx = sections.indexOf(e.target);
+      tabBtns.forEach(b => b.classList.remove('active'));
+      if(idx > -1) tabBtns[idx].classList.add('active');
+    }
+  });
+}, {rootMargin:'-40% 0px -55% 0px'});
+sections.forEach(s => spy.observe(s));
+
+/* ---------------- generic MCQ renderer ---------------- */
+function renderMCQ(mountId, questions){
+  const mount = document.getElementById(mountId);
+  questions.forEach((q, qi) => {
+    const item = document.createElement('div');
+    item.className = 'q-item';
+    const qt = document.createElement('div');
+    qt.className = 'q-text';
+    qt.textContent = `Q${qi+1}. ${q.text}`;
+    item.appendChild(qt);
+    const opts = document.createElement('div');
+    opts.className = 'q-opts';
+    const explain = document.createElement('div');
+    explain.className = 'q-explain';
+    explain.textContent = q.explain || '';
+
+    q.options.forEach((opt, oi) => {
+      const btn = document.createElement('button');
+      btn.className = 'opt-btn';
+      btn.textContent = opt;
+      btn.addEventListener('click', () => {
+        const isCorrect = oi === q.answer;
+        [...opts.children].forEach(b => b.disabled = true);
+        if(isCorrect){
+          btn.classList.add('correct');
+        } else {
+          btn.classList.add('wrong');
+          opts.children[q.answer].classList.add('correct');
+        }
+        explain.classList.add('show');
+        bumpScore(isCorrect);
+      });
+      opts.appendChild(btn);
+    });
+    item.appendChild(opts);
+    item.appendChild(explain);
+    mount.appendChild(item);
+  });
+}
+
+/* ---------------- accordion: 6 cyberbullying types ---------------- */
+const bullyData = [
+  {ic:'🗯️', title:'사이버 명예 훼손', def:'사이버 공간에서 상대방을 비하할 목적으로 사실 또는 거짓을 말하여 명예를 떨어뜨리거나 인격을 침해하는 행위입니다.'},
+  {ic:'👣', title:'사이버 스토킹', def:'사이버 공간에서 원하지 않는 문자, 사진, 동영상을 반복적으로 보내 상대방에게 공포심이나 불안감을 주는 모든 행위입니다.'},
+  {ic:'💸', title:'사이버 갈취 및 강요', def:'주로 와이파이 셔틀, 게임 머니(사이버 머니) 등 사이버상 갈취 형태로 괴롭히는 행위입니다.'},
+  {ic:'💬', title:'사이버 언어폭력', def:'채팅방, 게시판 등 사이버 공간에서 문자, 사진, 동영상 등으로 비방 글, 악성 댓글, 욕설 등을 올리는 행위입니다.'},
+  {ic:'🔓', title:'신상 정보 유출 및 폭로', def:'정보 통신망을 이용하여 상대방의 동의 없이 개인의 사생활과 관련된 특정 신체 부위나 각종 유해성 사진, 영상 등을 전송·유포하여 괴롭히는 행위입니다.'},
+  {ic:'🚫', title:'사이버 따돌림', def:'사이버 공간에서 특정 상대를 대화에 참여하지 못하게 하거나 채팅방에서 나가지 못하게 하는 등의 행위입니다.'}
+];
+const accBully = document.getElementById('accBully');
+bullyData.forEach((d, i) => {
+  const item = document.createElement('div');
+  item.className = 'acc-item';
+  item.innerHTML = `
+    <div class="acc-head">
+      <span class="ic">${d.ic}</span>
+      <div>
+        <span class="num">TYPE 0${i+1}</span>
+        <b>${d.title}</b>
+      </div>
+      <span class="chevron">⌄</span>
+    </div>
+    <div class="acc-body"><div class="acc-body-inner">${d.def}</div></div>`;
+  item.querySelector('.acc-head').addEventListener('click', () => item.classList.toggle('open'));
+  accBully.appendChild(item);
+});
+
+renderMCQ('quizBully-mount', [
+  {text:'친구가 같은 채팅방에서 나가지 못하게 계속 초대하고, 대화에서 일부러 빼놓는다.', options:['사이버 스토킹','사이버 따돌림','사이버 갈취'], answer:1, explain:'대화 참여를 막거나 채팅방에서 나가지 못하게 하는 것은 사이버 따돌림이에요.'},
+  {text:'와이파이를 계속 켜달라고 하거나, 게임 머니를 강제로 요구한다.', options:['사이버 갈취 및 강요','사이버 명예훼손','사이버 언어폭력'], answer:0, explain:'와이파이 셔틀, 게임 머니 갈취는 사이버 갈취 및 강요에 해당해요.'},
+  {text:'게시판에 어떤 친구에 대한 거짓 소문을 퍼뜨려 명예를 떨어뜨린다.', options:['사이버 스토킹','신상 정보 유출','사이버 명예훼손'], answer:2, explain:'사실이든 거짓이든 명예를 떨어뜨리는 것은 사이버 명예훼손이에요.'}
+]);
+
+/* ---------------- flip cards: 3 cybercrime types ---------------- */
+const crimeData = [
+  {tag:'CRIME 01', title:'🕵️ 해킹', def:'불법으로 정보 시스템에 침투하여 정보를 빼내거나 프로그램을 파괴하는 행위입니다.'},
+  {tag:'CRIME 02', title:'📡 분산 서비스 거부 공격 (DDoS)', def:'많은 수의 컴퓨터를 원격 조종해서 특정 웹 사이트에 동시에 접속하여 과부하를 일으키는 행위입니다.'},
+  {tag:'CRIME 03', title:'🦠 악성 프로그램', def:'컴퓨터 시스템이나 데이터를 훼손하거나 불법적인 활동을 수행하는 악의적인 목적이 있는 프로그램을 배포하는 행위입니다.'}
+];
+const flipCrime = document.getElementById('flipCrime');
+crimeData.forEach(d => {
+  const flip = document.createElement('div');
+  flip.className = 'flip';
+  flip.innerHTML = `
+    <div class="flip-inner">
+      <div class="flip-face flip-front">
+        <div class="tag">${d.tag}</div>
+        <h4>${d.title}</h4>
+        <div class="hint">👆 클릭해서 뜻 보기</div>
+      </div>
+      <div class="flip-face flip-back">
+        <div class="tag" style="color:var(--amber);">DEFINITION</div>
+        <p>${d.def}</p>
+      </div>
+    </div>`;
+  flip.addEventListener('click', () => flip.classList.toggle('flipped'));
+  flipCrime.appendChild(flip);
+});
+
+renderMCQ('quizCrime-mount', [
+  {text:'수많은 컴퓨터를 원격 조종해 한 웹사이트에 동시에 몰려가 접속을 마비시켰다.', options:['해킹','분산 서비스 거부 공격(DDoS)','악성 프로그램'], answer:1, explain:'많은 컴퓨터를 동원해 과부하를 일으키는 것은 DDoS 공격이에요.'},
+  {text:'허락 없이 학교 정보 시스템에 침투해서 성적 정보를 빼냈다.', options:['해킹','DDoS','악성 프로그램'], answer:0, explain:'불법으로 시스템에 침투하는 것은 해킹이에요.'},
+  {text:'컴퓨터 파일을 몰래 훼손하는 프로그램을 이메일에 첨부해 퍼뜨렸다.', options:['해킹','DDoS','악성 프로그램'], answer:2, explain:'컴퓨터를 훼손할 목적의 프로그램을 배포하는 것은 악성 프로그램이에요.'}
+]);
+
+/* ---------------- checklist (section 6) ---------------- */
+const checklistData = [
+  '온라인에서도 예의를 지키며 이야기한다.',
+  '친구가 원하지 않는 사진이나 영상을 함부로 보내거나 퍼뜨리지 않는다.',
+  '나쁜 댓글이나 소문을 보면 그냥 넘기지 않고 알린다.',
+  '누군가를 채팅방이나 대화에서 일부러 소외시키지 않는다.',
+  '모르는 사람의 요청(게임 머니, 개인정보 등)에 함부로 응하지 않는다.'
+];
+const checklistEl = document.getElementById('checklist');
+checklistData.forEach((text, i) => {
+  const row = document.createElement('label');
+  row.className = 'check-row';
+  row.innerHTML = `<input type="checkbox" /><span>${text}</span>`;
+  const input = row.querySelector('input');
+  input.addEventListener('change', () => row.classList.toggle('checked', input.checked));
+  checklistEl.appendChild(row);
+});
+
+/* ---------------- final quiz ---------------- */
+const finalQs = [
+  {text:'사이버 폭력은 무엇을 통해 다른 사람에게 피해나 불쾌감을 주는 행위인가요?', options:['언어, 영상 등','오직 전화 통화','종이 편지','실제 물리적 접촉'], answer:0, explain:'사이버 폭력은 언어, 영상 등으로 피해나 불쾌감을 주는 행위예요.'},
+  {text:'특정 친구를 채팅방에서 나가지 못하게 하는 행위는?', options:['사이버 스토킹','사이버 따돌림','해킹','DDoS'], answer:1, explain:'대화·채팅방에서 배제하는 것은 사이버 따돌림이에요.'},
+  {text:'많은 컴퓨터를 원격 조종해 웹사이트에 과부하를 일으키는 공격은?', options:['해킹','악성 프로그램','분산 서비스 거부 공격(DDoS)','사이버 갈취'], answer:2, explain:'DDoS는 다수의 컴퓨터로 동시에 접속시켜 과부하를 일으키는 공격이에요.'},
+  {text:'사이버 범죄는 어디에서 발생하는 범죄 행위를 말하나요?', options:['오프라인 매장','네트워크로 연결된 컴퓨팅 시스템·사이버 공간','학교 운동장','도서관'], answer:1, explain:'사이버 범죄는 네트워크·사이버 공간에서 발생하는 범죄 행위예요.'},
+  {text:'디지털 사회의 규칙은 어떻게 만드는 것이 가장 바람직할까요?', options:['한 사람이 정해서 따르게 한다','아무 규칙 없이 자유롭게 둔다','구성원이 민주적으로 논의해서 정한다','어른들만 정한다'], answer:2, explain:'학습목표처럼, 규칙은 구성원이 민주적으로 논의해서 실천 방안을 수립하는 것이 중요해요.'}
+];
+renderMCQ('finalQuiz-mount', finalQs);
+
+const finalMount = document.getElementById('finalQuiz-mount');
+finalMount.addEventListener('click', (e) => {
+  if(!e.target.classList.contains('opt-btn')) return;
+  setTimeout(() => {
+    const answeredItems = finalMount.querySelectorAll('.q-item');
+    let done = 0, rightCount = 0;
+    answeredItems.forEach(item => {
+      const btns = item.querySelectorAll('.opt-btn');
+      const answered = [...btns].some(b => b.disabled);
+      if(answered){
+        done++;
+        if(!item.querySelector('.opt-btn.wrong')) rightCount++;
+      }
+    });
+    if(done === finalQs.length){
+      const box = document.getElementById('resultBox');
+      const scoreEl = document.getElementById('resultScore');
+      const msgEl = document.getElementById('resultMsg');
+      scoreEl.textContent = `${rightCount} / ${finalQs.length}`;
+      let msg = '';
+      if(rightCount === finalQs.length) msg = '🏆 완벽해요! 훌륭한 디지털 시민이네요!';
+      else if(rightCount >= 3) msg = '👍 잘했어요! 핵심 개념을 잘 이해했어요.';
+      else msg = '💡 다시 한 번 위 내용을 읽고 복습해봐요!';
+      msgEl.textContent = msg;
+      box.classList.add('show');
+      box.scrollIntoView({behavior:'smooth', block:'center'});
+    }
+  }, 50);
+});
+
+/* ---------------- animated network hero background ---------------- */
+(function(){
+  const svg = document.getElementById('netBg');
+  const W = 900, H = 380;
+  const nodes = [];
+  const N = 24;
+  for(let i=0;i<N;i++){
+    nodes.push({x: Math.random()*W, y: Math.random()*H, r: 2+Math.random()*2.5, danger: Math.random() < 0.25});
+  }
+  let html = '';
+  for(let i=0;i<N;i++){
+    for(let j=i+1;j<N;j++){
+      const dx = nodes[i].x-nodes[j].x, dy = nodes[i].y-nodes[j].y;
+      const dist = Math.sqrt(dx*dx+dy*dy);
+      if(dist < 130){
+        const op = (1 - dist/130) * 0.3;
+        html += `<line x1="${nodes[i].x}" y1="${nodes[i].y}" x2="${nodes[j].x}" y2="${nodes[j].y}" stroke="#7CFFCB" stroke-width="1" opacity="${op.toFixed(2)}"/>`;
+      }
+    }
+  }
+  nodes.forEach((n) => {
+    const dur = (2.5 + Math.random()*2.5).toFixed(2);
+    const delay = (Math.random()*3).toFixed(2);
+    const color = n.danger ? '#FF8B8B' : '#7CFFCB';
+    html += `<circle cx="${n.x}" cy="${n.y}" r="${n.r}" fill="${color}" opacity="0.7">
+      <animate attributeName="opacity" values="0.25;0.9;0.25" dur="${dur}s" begin="${delay}s" repeatCount="indefinite"/>
+    </circle>`;
+  });
+  svg.innerHTML = html;
+})();
+</script>
+</body>
+</html>
