@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>정보 1차시</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+  :root{
+    --bg:#080B18;
+    --bg-2:#0D1330;
+    --surface:#131A38;
+    --surface-2:#1B2447;
+    --line:#2B3566;
+    --line-soft:#1F2850;
+    --mint:#7CFFCB;
+    --amber:#FFB454;
+    --coral:#FF8B8B;
+    --violet:#B9A6FF;
+    --sky:#7EC8FF;
+    --pink:#FF9FD6;
+    --text:#EAEFFC;
+    --text-dim:#95A1CC;
+    --text-faint:#5C6796;
+    --font-display:'Pretendard', 'Noto Sans KR', sans-serif;
+    --font-body:'Pretendard', 'Noto Sans KR', sans-serif;
+    --font-mono:'JetBrains Mono', monospace;
+    --radius:18px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(circle at 15% 0%, #131C42 0%, transparent 45%),
+      radial-gradient(circle at 85% 15%, #1A1440 0%, transparent 40%),
+      var(--bg);
+    color:var(--text);
+    font-family:var(--font-body);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--mint); color:#06110D;}
+  .wrap{max-width:920px; margin:0 auto; padding:0 24px;}
+  .eyebrow{
+    font-family:var(--font-mono);
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    font-size:12.5px;
+    color:var(--mint);
+    display:flex; align-items:center; gap:8px;
+  }
+  .eyebrow::before{content:"//"; color:var(--text-faint);}
+
+  nav.tabs{
+    position:sticky; top:0; z-index:50;
+    backdrop-filter:blur(14px);
+    background:rgba(8,11,24,.82);
+    border-bottom:1px solid var(--line-soft);
+  }
+  .tabs-inner{
+    max-width:920px; margin:0 auto; padding:0 24px;
+    display:flex; gap:2px; overflow-x:auto; scrollbar-width:none;
+  }
+  .tabs-inner::-webkit-scrollbar{display:none;}
+  .tab-btn{
+    flex:0 0 auto; background:none; border:none; cursor:pointer;
+    color:var(--text-faint); font-family:var(--font-mono); font-size:12.5px;
+    padding:14px 12px 12px; border-bottom:2px solid transparent;
+    transition:color .2s; white-space:nowrap;
+  }
+  .tab-btn:hover{color:var(--text-dim);}
+  .tab-btn.active{color:var(--mint); border-bottom-color:var(--mint);}
+  .tab-btn .n{opacity:.6; margin-right:4px;}
+
+  header.hero{
+    position:relative; padding:76px 0 52px; overflow:hidden;
+    border-bottom:1px solid var(--line-soft);
+  }
+  .net-bg{position:absolute; inset:0; opacity:.5; pointer-events:none;}
+  .hero-inner{position:relative; z-index:2;}
+  h1.title{
+    font-family:var(--font-display); font-weight:800; letter-spacing:-0.01em;
+    font-size:clamp(32px, 5vw, 50px); line-height:1.3; margin:14px 0 10px; color:#fff;
+  }
+  h1.title .hl{color:var(--mint);}
+  .hero p.desc{color:var(--text-dim); font-size:16px; max-width:600px; margin:0;}
+
+  section.block{padding:64px 0; border-bottom:1px solid var(--line-soft);}
+  section.block:last-of-type{border-bottom:none;}
+  .sec-head{margin-bottom:30px;}
+  h2.sec-title{
+    font-family:var(--font-display); font-weight:800; letter-spacing:-0.01em;
+    line-height:1.35; font-size:clamp(22px,3.4vw,30px); margin:10px 0 0; color:#fff;
+  }
+  p.sec-sub{color:var(--text-dim); margin:10px 0 0; max-width:640px;}
+
+  /* ---------- REFERENCE CARDS ---------- */
+  .cat-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:8px;}
+  @media (max-width:720px){.cat-grid{grid-template-columns:1fr;}}
+  .cat-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:14px;
+    padding:18px 20px; border-left:4px solid var(--cat-color);
+  }
+  .cat-card .name{font-size:16px; font-weight:700; margin-bottom:10px; color:#fff;}
+  .cat-card .chips{display:flex; flex-wrap:wrap; gap:6px;}
+  .chip-item{
+    font-size:12.5px; padding:5px 11px; border-radius:999px;
+    background:var(--surface-2); border:1px solid var(--line); color:var(--text-dim);
+  }
+
+  /* ---------- QUIZ ---------- */
+  .quiz-shell{
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+    padding:32px; position:relative; overflow:hidden;
+  }
+  .progress-track{
+    height:6px; background:var(--surface-2); border-radius:999px; overflow:hidden; margin-bottom:22px;
+  }
+  .progress-fill{height:100%; background:var(--mint); width:0%; transition:width .3s;}
+  .progress-label{
+    display:flex; justify-content:space-between; font-family:var(--font-mono);
+    font-size:12px; color:var(--text-faint); margin-bottom:22px;
+  }
+  .progress-label b{color:var(--mint);}
+  .quiz-term-wrap{text-align:center; padding:16px 10px 28px;}
+  .quiz-term-label{font-family:var(--font-mono); font-size:12px; color:var(--text-faint); letter-spacing:.1em; margin-bottom:10px;}
+  .quiz-term{
+    font-family:var(--font-display); font-weight:800; font-size:clamp(26px,4.4vw,38px);
+  }
+  .quiz-instruction{color:var(--text-dim); font-size:14px; margin-top:8px;}
+
+  .chip-grid{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-bottom:24px;}
+  .pick-chip{
+    background:var(--surface-2); border:2px solid var(--line); border-radius:999px;
+    padding:10px 18px; cursor:pointer; font-family:var(--font-body); font-size:14px;
+    font-weight:600; color:var(--text); transition:.15s;
+  }
+  .pick-chip:hover:not(:disabled){border-color:var(--text-dim);}
+  .pick-chip.selected{border-color:var(--mint); background:rgba(124,255,203,.12); color:var(--mint);}
+  .pick-chip:disabled{cursor:default;}
+  .pick-chip.result-correct{border-color:var(--mint); background:rgba(124,255,203,.18); color:var(--mint);}
+  .pick-chip.result-wrong{border-color:var(--coral); background:rgba(255,139,139,.15); color:var(--coral);}
+  .pick-chip.result-missed{border-color:var(--amber); background:rgba(255,180,84,.1); color:var(--amber); border-style:dashed;}
+  .pick-chip .mark{margin-left:6px; font-size:12px;}
+
+  .submit-row{display:flex; justify-content:center; gap:12px; margin-top:4px;}
+  .submit-btn{
+    background:var(--mint); color:#06170F; border:none; border-radius:999px;
+    padding:12px 30px; font-weight:800; font-size:14.5px; cursor:pointer;
+    font-family:var(--font-body);
+  }
+  .submit-btn:hover{filter:brightness(1.08);}
+  .submit-btn:disabled{opacity:.4; cursor:default;}
+  .feedback{
+    text-align:center; margin-top:18px; font-size:14px; color:var(--text-dim); min-height:22px;
+  }
+  .feedback.correct-msg{color:var(--mint);}
+  .feedback.wrong-msg{color:var(--amber);}
+  .next-row{display:flex; justify-content:center; margin-top:16px;}
+  .next-btn{
+    background:none; border:1px solid var(--mint); color:var(--mint); border-radius:999px;
+    padding:12px 30px; font-weight:800; font-size:14.5px; cursor:pointer;
+    font-family:var(--font-body); display:none;
+  }
+  .next-btn.show{display:inline-block;}
+  .next-btn:hover{background:rgba(124,255,203,.1);}
+
+  /* ---------- RESULT ---------- */
+  .result-wrap{display:none; text-align:center;}
+  .result-wrap.show{display:block;}
+  .result-score{font-family:var(--font-display); font-weight:800; font-size:52px; color:var(--mint);}
+  .result-msg{font-size:16px; color:var(--text); margin:8px 0 26px;}
+  .miss-list{text-align:left; display:flex; flex-direction:column; gap:10px; margin-bottom:26px;}
+  .miss-block{
+    background:var(--surface-2); border:1px solid var(--line); border-radius:12px;
+    padding:14px 16px; font-size:13.5px;
+  }
+  .miss-block .cat-name{font-weight:800; margin-bottom:6px; display:block;}
+  .miss-block .row{color:var(--text-dim); margin-top:2px;}
+  .miss-block .row b{color:var(--amber); font-weight:700;}
+  .miss-block .row.wrongpick b{color:var(--coral);}
+  .restart-btn{
+    background:none; border:1px solid var(--mint); color:var(--mint);
+    border-radius:999px; padding:12px 28px; font-weight:800; font-size:14.5px;
+    cursor:pointer; font-family:var(--font-body);
+  }
+  .restart-btn:hover{background:rgba(124,255,203,.1);}
+
+  footer{padding:20px 24px 60px;}
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none !important; transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<nav class="tabs">
+  <div class="tabs-inner">
+    <button class="tab-btn" data-target="s1"><span class="n">01</span>유형 알아보기</button>
+    <button class="tab-btn" data-target="s2"><span class="n">02</span>퀴즈</button>
+  </div>
+</nav>
+
+<header class="hero">
+  <svg class="net-bg" id="netBg" viewBox="0 0 900 340" preserveAspectRatio="xMidYMid slice"></svg>
+  <div class="wrap hero-inner">
+    <div class="eyebrow">정보 · 5. 디지털 문화</div>
+    <h1 class="title">개인 정보의 <span class="hl">유형</span></h1>
+    <p class="desc">개인 정보는 성격에 따라 여러 유형으로 나눌 수 있습니다. 각 유형을 살펴보고, 퀴즈를 풀며 제대로 구분할 수 있는지 확인해봅시다.</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- SECTION 1: reference -->
+  <section class="block" id="s1">
+    <div class="sec-head">
+      <div class="eyebrow">01 · 유형 알아보기</div>
+      <h2 class="sec-title">개인 정보의 6가지 유형</h2>
+      <p class="sec-sub">퀴즈를 풀기 전에 각 유형에 어떤 정보가 속하는지 먼저 살펴보세요.</p>
+    </div>
+    <div class="cat-grid" id="catGrid"></div>
+  </section>
+
+  <!-- SECTION 2: quiz -->
+  <section class="block" id="s2">
+    <div class="sec-head">
+      <div class="eyebrow">02 · 퀴즈</div>
+      <h2 class="sec-title">이 유형에는 어떤 정보가 있을까요?</h2>
+      <p class="sec-sub">제시된 유형에 해당하는 정보를 모두 고른 뒤, 정답 확인 버튼을 눌러보세요.</p>
+    </div>
+
+    <div class="quiz-shell">
+      <div id="quizPlay">
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="progress-label">
+          <span>유형 <b id="qNum">1</b> / <span id="qTotal">6</span></span>
+          <span>점수 <b id="qScore">0</b></span>
+        </div>
+        <div class="quiz-term-wrap">
+          <div class="quiz-term-label">CATEGORY</div>
+          <div class="quiz-term" id="quizTerm">-</div>
+          <div class="quiz-instruction">아래 중 이 유형에 해당하는 정보를 <b>모두</b> 선택하세요</div>
+        </div>
+        <div class="chip-grid" id="chipGrid"></div>
+        <div class="submit-row"><button class="submit-btn" id="submitBtn">정답 확인</button></div>
+        <div class="feedback" id="feedback"></div>
+        <div class="next-row"><button class="next-btn" id="nextBtn">다음 유형 →</button></div>
+      </div>
+
+      <div class="result-wrap" id="resultWrap">
+        <div class="result-score" id="resultScore">0 / 31</div>
+        <div class="result-msg" id="resultMsg"></div>
+        <div class="miss-list" id="missList"></div>
+        <button class="restart-btn" id="restartBtn">🔄 다시 풀기</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer></footer>
+
+<script>
+/* ---------------- data ---------------- */
+const categories = [
+  {name:'인적 사항',   color:'#7CFFCB', items:['성명','주소','생년월일','성별','주민등록번호','연락처','출생지']},
+  {name:'재산적 정보', color:'#FFB454', items:['봉급액','상여금 및 수수료','이자 소득','사업 소득']},
+  {name:'사회적 정보', color:'#B9A6FF', items:['학력','성적','출석 상황','생활기록부','건강기록부']},
+  {name:'신체적 정보', color:'#FF8B8B', items:['얼굴','홍채','음성','유전자 정보','지문','키','몸무게','건강 상태','진료 기록']},
+  {name:'정신적 정보', color:'#7EC8FF', items:['종교','가치관','정당']},
+  {name:'기타 정보',   color:'#FF9FD6', items:['전화 통화 내역','위치 정보','습관 및 취미 정보']}
+];
+const TOTAL_ITEMS = categories.reduce((s,c)=>s+c.items.length, 0);
+
+/* ---------------- reference cards ---------------- */
+const catGrid = document.getElementById('catGrid');
+categories.forEach(c => {
+  const card = document.createElement('div');
+  card.className = 'cat-card';
+  card.style.setProperty('--cat-color', c.color);
+  card.innerHTML = `
+    <div class="name" style="color:${c.color}">${c.name}</div>
+    <div class="chips">${c.items.map(i => `<span class="chip-item">${i}</span>`).join('')}</div>`;
+  catGrid.appendChild(card);
+});
+
+/* ---------------- nav scroll spy ---------------- */
+const tabBtns = [...document.querySelectorAll('.tab-btn')];
+const sections = tabBtns.map(b => document.getElementById(b.dataset.target));
+tabBtns.forEach(b => b.addEventListener('click', () => {
+  document.getElementById(b.dataset.target).scrollIntoView({behavior:'smooth', block:'start'});
+}));
+const spy = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      const idx = sections.indexOf(e.target);
+      tabBtns.forEach(b => b.classList.remove('active'));
+      if(idx > -1) tabBtns[idx].classList.add('active');
+    }
+  });
+}, {rootMargin:'-40% 0px -55% 0px'});
+sections.forEach(s => spy.observe(s));
+
+/* ---------------- quiz logic ---------------- */
+function shuffle(arr){
+  const a = [...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+let order = [];      // shuffled category indices
+let idx = 0;
+let score = 0;
+let selected = new Set();
+let currentOptions = [];  // {term, correct}
+let answered = false;
+let reviewLog = [];   // per-category review data for result screen
+
+const quizTerm = document.getElementById('quizTerm');
+const chipGrid = document.getElementById('chipGrid');
+const feedback = document.getElementById('feedback');
+const submitBtn = document.getElementById('submitBtn');
+const nextBtn = document.getElementById('nextBtn');
+const progressFill = document.getElementById('progressFill');
+const qNum = document.getElementById('qNum');
+const qTotal = document.getElementById('qTotal');
+const qScore = document.getElementById('qScore');
+const quizPlay = document.getElementById('quizPlay');
+const resultWrap = document.getElementById('resultWrap');
+
+function buildDistractors(catIndex, count){
+  const pool = [];
+  categories.forEach((c, ci) => {
+    if(ci !== catIndex) c.items.forEach(term => pool.push(term));
+  });
+  return shuffle(pool).slice(0, count);
+}
+
+function initQuiz(){
+  order = shuffle(categories.map((_, i) => i));
+  idx = 0; score = 0; reviewLog = [];
+  qTotal.textContent = order.length;
+  quizPlay.style.display = 'block';
+  resultWrap.classList.remove('show');
+  renderQuestion();
+}
+
+function renderQuestion(){
+  answered = false;
+  selected = new Set();
+  const catIndex = order[idx];
+  const cat = categories[catIndex];
+  const distractorCount = Math.min(cat.items.length, 5);
+  const distractors = buildDistractors(catIndex, distractorCount);
+
+  currentOptions = shuffle([
+    ...cat.items.map(term => ({term, correct:true})),
+    ...distractors.map(term => ({term, correct:false}))
+  ]);
+
+  quizTerm.textContent = cat.name;
+  quizTerm.style.color = cat.color;
+  qNum.textContent = idx + 1;
+  qScore.textContent = score;
+  progressFill.style.width = `${(idx / order.length) * 100}%`;
+  feedback.textContent = '';
+  feedback.className = 'feedback';
+  nextBtn.classList.remove('show');
+  submitBtn.disabled = false;
+  submitBtn.style.display = 'inline-block';
+
+  chipGrid.innerHTML = '';
+  currentOptions.forEach((opt, oi) => {
+    const chip = document.createElement('button');
+    chip.className = 'pick-chip';
+    chip.textContent = opt.term;
+    chip.addEventListener('click', () => {
+      if(answered) return;
+      if(selected.has(oi)){ selected.delete(oi); chip.classList.remove('selected'); }
+      else { selected.add(oi); chip.classList.add('selected'); }
+    });
+    chipGrid.appendChild(chip);
+  });
+}
+
+submitBtn.addEventListener('click', () => {
+  if(answered) return;
+  answered = true;
+  submitBtn.style.display = 'none';
+
+  const catIndex = order[idx];
+  const cat = categories[catIndex];
+  const chips = [...chipGrid.children];
+  let hits = 0, falsePos = 0;
+  const missedTerms = [];
+  const wrongTerms = [];
+
+  currentOptions.forEach((opt, oi) => {
+    const chip = chips[oi];
+    chip.disabled = true;
+    const isSelected = selected.has(oi);
+    if(opt.correct && isSelected){
+      hits++; chip.classList.add('result-correct'); chip.classList.remove('selected');
+    } else if(opt.correct && !isSelected){
+      missedTerms.push(opt.term); chip.classList.add('result-missed');
+    } else if(!opt.correct && isSelected){
+      falsePos++; wrongTerms.push(opt.term); chip.classList.add('result-wrong'); chip.classList.remove('selected');
+    }
+  });
+
+  const correctCount = cat.items.length;
+  const gained = Math.max(0, hits - falsePos);
+  score += gained;
+  qScore.textContent = score;
+
+  if(missedTerms.length === 0 && wrongTerms.length === 0){
+    feedback.textContent = `완벽해요! ${correctCount}개를 모두 정확히 골랐어요. (+${gained}점)`;
+    feedback.classList.add('correct-msg');
+  } else {
+    feedback.textContent = `${correctCount}개 중 ${hits}개 선택, 잘못 고른 것 ${falsePos}개. (+${gained}점)`;
+    feedback.classList.add('wrong-msg');
+  }
+
+  reviewLog.push({cat: cat.name, color: cat.color, missed: missedTerms, wrong: wrongTerms});
+  nextBtn.classList.add('show');
+});
+
+nextBtn.addEventListener('click', () => {
+  idx++;
+  if(idx >= order.length){
+    showResult();
+  } else {
+    renderQuestion();
+  }
+});
+
+function showResult(){
+  progressFill.style.width = '100%';
+  quizPlay.style.display = 'none';
+  resultWrap.classList.add('show');
+  document.getElementById('resultScore').textContent = `${score} / ${TOTAL_ITEMS}`;
+  let msg = '';
+  const ratio = score / TOTAL_ITEMS;
+  if(ratio >= 0.95) msg = '🏆 완벽해요! 개인 정보 유형 박사님이네요!';
+  else if(ratio >= 0.8) msg = '👍 아주 잘했어요! 조금만 더 복습하면 완벽해요.';
+  else if(ratio >= 0.5) msg = '💡 절반 이상 맞혔어요! 헷갈린 유형을 다시 살펴봐요.';
+  else msg = '📖 유형 설명을 다시 읽고 도전해봐요!';
+  document.getElementById('resultMsg').textContent = msg;
+
+  const missList = document.getElementById('missList');
+  missList.innerHTML = '';
+  const anyIssue = reviewLog.some(r => r.missed.length || r.wrong.length);
+  if(!anyIssue){
+    missList.innerHTML = `<div class="miss-block" style="text-align:center; color:var(--mint);">모든 유형을 완벽하게 골랐어요! 🎉</div>`;
+  } else {
+    reviewLog.forEach(r => {
+      if(r.missed.length === 0 && r.wrong.length === 0) return;
+      const block = document.createElement('div');
+      block.className = 'miss-block';
+      let html = `<span class="cat-name" style="color:${r.color}">${r.cat}</span>`;
+      if(r.missed.length) html += `<div class="row">놓친 정답: <b>${r.missed.join(', ')}</b></div>`;
+      if(r.wrong.length) html += `<div class="row wrongpick">잘못 고른 것: <b>${r.wrong.join(', ')}</b></div>`;
+      block.innerHTML = html;
+      missList.appendChild(block);
+    });
+  }
+}
+
+document.getElementById('restartBtn').addEventListener('click', initQuiz);
+
+initQuiz();
+
+/* ---------------- animated network hero background ---------------- */
+(function(){
+  const svg = document.getElementById('netBg');
+  const W = 900, H = 340;
+  const nodes = [];
+  const N = 22;
+  const palette = ['#7CFFCB','#FFB454','#B9A6FF','#FF8B8B','#7EC8FF','#FF9FD6'];
+  for(let i=0;i<N;i++){
+    nodes.push({x: Math.random()*W, y: Math.random()*H, r: 2+Math.random()*2.5, c: palette[Math.floor(Math.random()*palette.length)]});
+  }
+  let html = '';
+  for(let i=0;i<N;i++){
+    for(let j=i+1;j<N;j++){
+      const dx = nodes[i].x-nodes[j].x, dy = nodes[i].y-nodes[j].y;
+      const dist = Math.sqrt(dx*dx+dy*dy);
+      if(dist < 120){
+        const op = (1 - dist/120) * 0.28;
+        html += `<line x1="${nodes[i].x}" y1="${nodes[i].y}" x2="${nodes[j].x}" y2="${nodes[j].y}" stroke="#7CFFCB" stroke-width="1" opacity="${op.toFixed(2)}"/>`;
+      }
+    }
+  }
+  nodes.forEach((n) => {
+    const dur = (2.5 + Math.random()*2.5).toFixed(2);
+    const delay = (Math.random()*3).toFixed(2);
+    html += `<circle cx="${n.x}" cy="${n.y}" r="${n.r}" fill="${n.c}" opacity="0.7">
+      <animate attributeName="opacity" values="0.25;0.9;0.25" dur="${dur}s" begin="${delay}s" repeatCount="indefinite"/>
+    </circle>`;
+  });
+  svg.innerHTML = html;
+})();
+</script>
+</body>
+</html>
